@@ -2,6 +2,11 @@ import { useAuth } from '@/context/AuthContext';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { WalletCard } from '@/components/WalletCard';
+import { TransactionsList } from '@/components/TransactionsList';
+import { DataPlansList } from '@/components/products/DataPlansList';
+import { CablePackagesList } from '@/components/products/CablePackagesList';
+import { ElectricityDiscosList } from '@/components/products/ElectricityDiscosList';
 import { 
   Wallet, 
   Smartphone, 
@@ -131,19 +136,12 @@ export const Dashboard = () => {
             Welcome to your VT Recharge dashboard
           </p>
         </div>
-        <Card className="md:w-auto">
-          <CardContent className="p-4">
-            <div className="flex items-center gap-2">
-              <Wallet className="h-5 w-5 text-primary" />
-              <div>
-                <p className="text-sm text-muted-foreground">Wallet Balance</p>
-                <p className="text-xl font-bold text-foreground">
-                  ₦{profile?.wallet_balance?.toLocaleString() || '0'}
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+      </div>
+
+      {/* Wallet and Transactions Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <WalletCard />
+        <TransactionsList />
       </div>
 
       {/* Quick Actions */}
@@ -261,6 +259,43 @@ export const Dashboard = () => {
           </div>
         </CardContent>
       </Card>
+
+      {/* Available Services */}
+      <div className="space-y-8">
+        <div>
+          <h2 className="text-2xl font-bold text-foreground mb-2">Available Services</h2>
+          <p className="text-muted-foreground">
+            Browse and purchase from our range of services
+          </p>
+        </div>
+
+        {/* Data Plans */}
+        <div className="space-y-4">
+          <h3 className="text-xl font-semibold text-foreground flex items-center gap-2">
+            <Zap className="h-5 w-5 text-primary" />
+            Data Plans
+          </h3>
+          <DataPlansList />
+        </div>
+
+        {/* Cable Packages */}
+        <div className="space-y-4">
+          <h3 className="text-xl font-semibold text-foreground flex items-center gap-2">
+            <Tv className="h-5 w-5 text-primary" />
+            Cable Packages
+          </h3>
+          <CablePackagesList />
+        </div>
+
+        {/* Electricity Discos */}
+        <div className="space-y-4">
+          <h3 className="text-xl font-semibold text-foreground flex items-center gap-2">
+            <Zap className="h-5 w-5 text-primary" />
+            Electricity Discos
+          </h3>
+          <ElectricityDiscosList />
+        </div>
+      </div>
     </div>
   );
 };

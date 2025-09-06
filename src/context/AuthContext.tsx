@@ -43,24 +43,63 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const ensureProfileExists = async (user: User, userMetadata?: any) => {
+    try {
+      // First try to fetch existing profile
+      const { data: existingProfile, error: fetchError } = await supabase
+        .from('profiles')
+        .select('id, user_id, first_name, last_name, phone_number, wallet_balance, created_at, updated_at')
+        .eq('user_id', user.id)
+        .single();
+
+      // If profile exists, return it
+      if (existingProfile && !fetchError) {
+        return existingProfile;
+      }
+
+      // If profile doesn't exist (PGRST116), create one
+      if (fetchError && fetchError.code === 'PGRST116') {
+        console.warn('Profile not found, creating new profile for user:', user.id);
+        const { data: newProfile, error: createError } = await supabase
+          .from('profiles')
+          .insert([{ 
+            user_id: user.id, 
+            wallet_balance: 0,
+            first_name: userMetadata?.first_name || user.user_metadata?.first_name || null,
+            last_name: userMetadata?.last_name || user.user_metadata?.last_name || null,
+            phone_number: userMetadata?.phone_number || user.user_metadata?.phone_number || null,
+          }])
+          .select('id, user_id, first_name, last_name, phone_number, wallet_balance, created_at, updated_at')
+          .single();
+
+        if (createError) {
+          console.warn(`Error creating profile (${createError.code}): ${createError.message}`);
+          return null;
+        }
+
+        return newProfile;
+      }
+
+      // If there's another error fetching, log it
+      if (fetchError) {
+        console.warn(`Error checking profile existence (${fetchError.code}): ${fetchError.message}`);
+      }
+
+      return null;
+    } catch (error) {
+      console.warn('Unexpected error in ensureProfileExists:', error);
+      return null;
+    }
+  };
+
   const fetchProfile = async () => {
     if (!user) return;
     
     try {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('user_id', user.id)
-        .single();
-
-      if (error && error.code !== 'PGRST116') {
-        console.error('Error fetching profile:', error);
-        return;
-      }
-
-      setProfile(data);
+      const profile = await ensureProfileExists(user);
+      setProfile(profile);
     } catch (error) {
-      console.error('Error fetching profile:', error);
+      console.error('Error in fetchProfile:', error);
     }
   };
 
@@ -73,8 +112,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         
         if (session?.user) {
           // Defer profile fetch to avoid deadlock
-          setTimeout(() => {
-            fetchProfile();
+          setTimeout(async () => {
+            // Ensure profile exists for new sessions
+            const profile = await ensureProfileExists(session.user);
+            setProfile(profile);
           }, 0);
         } else {
           setProfile(null);
@@ -85,13 +126,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     );
 
     // Check for existing session
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
       
       if (session?.user) {
-        setTimeout(() => {
-          fetchProfile();
+        setTimeout(async () => {
+          // Ensure profile exists for existing sessions
+          const profile = await ensureProfileExists(session.user);
+          setProfile(profile);
         }, 0);
       }
       
@@ -113,7 +156,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setLoading(true);
       const redirectUrl = `${window.location.origin}/`;
       
-      const { error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -133,6 +176,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           variant: "destructive",
         });
       } else {
+        // If user was created immediately (no email confirmation required)
+        if (data.user) {
+          // Ensure profile exists with the provided metadata
+          const userMetadata = {
+            first_name: firstName,
+            last_name: lastName,
+            phone_number: phone,
+          };
+          await ensureProfileExists(data.user, userMetadata);
+        }
+        
         toast({
           title: "Check your email",
           description: "We've sent you a confirmation link.",
