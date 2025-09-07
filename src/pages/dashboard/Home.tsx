@@ -31,7 +31,7 @@ export const Home = () => {
           {getGreeting()}, {getDisplayName()}! 👋
         </h1>
         <p className="text-muted-foreground mt-2">
-          Welcome to your VT Recharge dashboard
+          Welcome to your AIG DATA dashboard
         </p>
       </div>
 

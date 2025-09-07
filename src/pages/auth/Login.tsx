@@ -42,7 +42,7 @@ export const Login = () => {
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-bold">Welcome Back</CardTitle>
           <CardDescription>
-            Sign in to your VT Recharge account
+            Sign in to your AIG DATA account
           </CardDescription>
         </CardHeader>
         <CardContent>

@@ -66,7 +66,7 @@ export const Signup = () => {
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-bold">Create Account</CardTitle>
           <CardDescription>
-            Join VT Recharge and start managing your services
+            Join AIG DATA and start managing your services
           </CardDescription>
         </CardHeader>
         <CardContent>
