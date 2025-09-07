@@ -77,7 +77,7 @@ const Index = () => {
               <div className="flex items-center justify-center w-8 h-8 bg-primary text-primary-foreground rounded-lg font-bold">
                 VT
               </div>
-              <span className="text-xl font-bold text-foreground">VT Recharge</span>
+              <span className="text-xl font-bold text-foreground">AIG DATA</span>
             </div>
             
             <div className="flex items-center gap-4">
@@ -104,7 +104,7 @@ const Index = () => {
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6">
-            Your One-Stop <span className="text-primary">VTU Platform</span>
+            Your One-Stop <span className="text-primary">AIG DATA</span>
           </h1>
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
             Buy airtime, data bundles, pay for cable TV subscriptions, and manage all your digital services in one secure platform.
@@ -127,7 +127,7 @@ const Index = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-              Why Choose VT Recharge?
+              Why Choose AIG DATA?
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
               We provide fast, secure, and reliable virtual top-up services for all your digital needs.
@@ -191,7 +191,7 @@ const Index = () => {
             Ready to Get Started?
           </h2>
           <p className="text-xl mb-8 opacity-90">
-            Join VT Recharge today and experience seamless digital transactions.
+            Join AIG DATA today and experience seamless digital transactions.
           </p>
           <Button size="lg" variant="secondary" asChild>
             <Link to={user ? "/dashboard" : "/auth/signup"}>
@@ -209,10 +209,10 @@ const Index = () => {
             <div className="flex items-center justify-center w-8 h-8 bg-primary text-primary-foreground rounded-lg font-bold">
               VT
             </div>
-            <span className="text-xl font-bold text-foreground">VT Recharge</span>
+            <span className="text-xl font-bold text-foreground">AIG DATA</span>
           </div>
           <p className="text-muted-foreground">
-            © 2024 VT Recharge. All rights reserved. Your trusted VTU platform.
+            © 2024 AIG DATA. All rights reserved. Your trusted AIG DATA platform.
           </p>
         </div>
       </footer>
