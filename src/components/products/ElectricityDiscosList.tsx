@@ -91,58 +91,60 @@ export const ElectricityDiscosList = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-      {discos.map((disco) => (
-        <Card key={disco.id} className="hover:shadow-md transition-shadow duration-200">
-          <CardHeader className="pb-3">
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-lg font-semibold">{disco.disco_name}</CardTitle>
-              <Badge className={getDiscoColor(disco.disco_name)}>
-                {disco.disco_code}
-              </Badge>
-            </div>
-            <CardDescription className="flex items-center gap-2">
-              <Building2 className="h-4 w-4" />
-              Electricity Distribution Company
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Hash className="h-4 w-4" />
-              <span>Code: {disco.disco_code}</span>
-            </div>
-            
-            <div className="pt-2">
-              <button 
-                onClick={() => handleBuyNow(disco)}
-                className="w-full bg-primary text-primary-foreground hover:bg-primary/90 px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200"
-              >
-                Pay Bills
-              </button>
-            </div>
-          </CardContent>
-        </Card>
-      ))}
-    </div>
+    <>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        {discos.map((disco) => (
+          <Card key={disco.id} className="hover:shadow-md transition-shadow duration-200">
+            <CardHeader className="pb-3">
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-lg font-semibold">{disco.disco_name}</CardTitle>
+                <Badge className={getDiscoColor(disco.disco_name)}>
+                  {disco.disco_code}
+                </Badge>
+              </div>
+              <CardDescription className="flex items-center gap-2">
+                <Building2 className="h-4 w-4" />
+                Electricity Distribution Company
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <Hash className="h-4 w-4" />
+                <span>Code: {disco.disco_code}</span>
+              </div>
+              
+              <div className="pt-2">
+                <button 
+                  onClick={() => handleBuyNow(disco)}
+                  className="w-full bg-primary text-primary-foreground hover:bg-primary/90 px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+                >
+                  Pay Bills
+                </button>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
 
-    {/* Purchase Modal */}
-    {selectedDisco && (
-      <PurchaseModal
-        isOpen={isModalOpen}
-        onClose={() => {
-          setIsModalOpen(false);
-          setSelectedDisco(null);
-        }}
-        onSuccess={handlePurchaseSuccess}
-        product={{
-          id: selectedDisco.id,
-          name: selectedDisco.disco_name,
-          price: 0, // Electricity bills don't have fixed prices
-          provider: selectedDisco.disco_code,
-          serviceType: 'electricity',
-          description: `Electricity Distribution Company - Code: ${selectedDisco.disco_code}`,
-        }}
-      />
-    )}
+      {/* Purchase Modal */}
+      {selectedDisco && (
+        <PurchaseModal
+          isOpen={isModalOpen}
+          onClose={() => {
+            setIsModalOpen(false);
+            setSelectedDisco(null);
+          }}
+          onSuccess={handlePurchaseSuccess}
+          product={{
+            id: selectedDisco.id,
+            name: selectedDisco.disco_name,
+            price: 0, // Electricity bills don't have fixed prices
+            provider: selectedDisco.disco_code,
+            serviceType: 'electricity',
+            description: `Electricity Distribution Company - Code: ${selectedDisco.disco_code}`,
+          }}
+        />
+      )}
+    </>
   );
 };

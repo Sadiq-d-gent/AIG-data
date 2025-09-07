@@ -97,65 +97,67 @@ export const CablePackagesList = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-      {cablePackages.map((pkg) => (
-        <Card key={pkg.id} className="hover:shadow-md transition-shadow duration-200">
-          <CardHeader className="pb-3">
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-lg font-semibold">{pkg.package_name}</CardTitle>
-              <Badge className={getProviderColor(pkg.provider)}>
-                {pkg.provider}
-              </Badge>
-            </div>
-            {pkg.description && (
-              <CardDescription className="flex items-center gap-2">
-                <Star className="h-4 w-4" />
-                {pkg.description}
-              </CardDescription>
-            )}
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="text-2xl font-bold text-primary">
-                {formatCurrency(pkg.price)}
-              </span>
-              <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                <Calendar className="h-4 w-4" />
-                {pkg.validity_days} days
+    <>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        {cablePackages.map((pkg) => (
+          <Card key={pkg.id} className="hover:shadow-md transition-shadow duration-200">
+            <CardHeader className="pb-3">
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-lg font-semibold">{pkg.package_name}</CardTitle>
+                <Badge className={getProviderColor(pkg.provider)}>
+                  {pkg.provider}
+                </Badge>
               </div>
-            </div>
-            
-            <div className="pt-2">
-              <button 
-                onClick={() => handleBuyNow(pkg)}
-                className="w-full bg-primary text-primary-foreground hover:bg-primary/90 px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200"
-              >
-                Subscribe Now
-              </button>
-            </div>
-          </CardContent>
-        </Card>
-      ))}
-    </div>
+              {pkg.description && (
+                <CardDescription className="flex items-center gap-2">
+                  <Star className="h-4 w-4" />
+                  {pkg.description}
+                </CardDescription>
+              )}
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-2xl font-bold text-primary">
+                  {formatCurrency(pkg.price)}
+                </span>
+                <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                  <Calendar className="h-4 w-4" />
+                  {pkg.validity_days} days
+                </div>
+              </div>
+              
+              <div className="pt-2">
+                <button 
+                  onClick={() => handleBuyNow(pkg)}
+                  className="w-full bg-primary text-primary-foreground hover:bg-primary/90 px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+                >
+                  Subscribe Now
+                </button>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
 
-    {/* Purchase Modal */}
-    {selectedPackage && (
-      <PurchaseModal
-        isOpen={isModalOpen}
-        onClose={() => {
-          setIsModalOpen(false);
-          setSelectedPackage(null);
-        }}
-        onSuccess={handlePurchaseSuccess}
-        product={{
-          id: selectedPackage.id,
-          name: selectedPackage.package_name,
-          price: selectedPackage.price,
-          provider: selectedPackage.provider,
-          serviceType: 'cable_tv',
-          description: selectedPackage.description || `${selectedPackage.validity_days} days validity`,
-        }}
-      />
-    )}
+      {/* Purchase Modal */}
+      {selectedPackage && (
+        <PurchaseModal
+          isOpen={isModalOpen}
+          onClose={() => {
+            setIsModalOpen(false);
+            setSelectedPackage(null);
+          }}
+          onSuccess={handlePurchaseSuccess}
+          product={{
+            id: selectedPackage.id,
+            name: selectedPackage.package_name,
+            price: selectedPackage.price,
+            provider: selectedPackage.provider,
+            serviceType: 'cable_tv',
+            description: selectedPackage.description || `${selectedPackage.validity_days} days validity`,
+          }}
+        />
+      )}
+    </>
   );
 };

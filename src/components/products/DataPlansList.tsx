@@ -56,8 +56,6 @@ export const DataPlansList = () => {
   };
 
   const handlePurchaseSuccess = () => {
-    // Refresh data plans or handle success
-    // For now, we'll just close the modal
     setIsModalOpen(false);
     setSelectedPlan(null);
   };
@@ -98,63 +96,65 @@ export const DataPlansList = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-      {dataPlans.map((plan) => (
-        <Card key={plan.id} className="hover:shadow-md transition-shadow duration-200">
-          <CardHeader className="pb-3">
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-lg font-semibold">{plan.plan_name}</CardTitle>
-              <Badge className={getNetworkColor(plan.network_provider)}>
-                {plan.network_provider.toUpperCase()}
-              </Badge>
-            </div>
-            <CardDescription className="flex items-center gap-2">
-              <Zap className="h-4 w-4" />
-              {plan.data_size}
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="text-2xl font-bold text-primary">
-                {formatCurrency(plan.price)}
-              </span>
-              <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                <Calendar className="h-4 w-4" />
-                {plan.validity_days} days
+    <>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        {dataPlans.map((plan) => (
+          <Card key={plan.id} className="hover:shadow-md transition-shadow duration-200">
+            <CardHeader className="pb-3">
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-lg font-semibold">{plan.plan_name}</CardTitle>
+                <Badge className={getNetworkColor(plan.network_provider)}>
+                  {plan.network_provider.toUpperCase()}
+                </Badge>
               </div>
-            </div>
-            
-            <div className="pt-2">
-              <button 
-                onClick={() => handleBuyNow(plan)}
-                className="w-full bg-primary text-primary-foreground hover:bg-primary/90 px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200"
-              >
-                Buy Now
-              </button>
-            </div>
-          </CardContent>
-        </Card>
-      ))}
-    </div>
+              <CardDescription className="flex items-center gap-2">
+                <Zap className="h-4 w-4" />
+                {plan.data_size}
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-2xl font-bold text-primary">
+                  {formatCurrency(plan.price)}
+                </span>
+                <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                  <Calendar className="h-4 w-4" />
+                  {plan.validity_days} days
+                </div>
+              </div>
+              
+              <div className="pt-2">
+                <button 
+                  onClick={() => handleBuyNow(plan)}
+                  className="w-full bg-primary text-primary-foreground hover:bg-primary/90 px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+                >
+                  Buy Now
+                </button>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
 
-    {/* Purchase Modal */}
-    {selectedPlan && (
-      <PurchaseModal
-        isOpen={isModalOpen}
-        onClose={() => {
-          setIsModalOpen(false);
-          setSelectedPlan(null);
-        }}
-        onSuccess={handlePurchaseSuccess}
-        product={{
-          id: selectedPlan.id,
-          name: selectedPlan.plan_name,
-          price: selectedPlan.price,
-          provider: selectedPlan.network_provider,
-          serviceType: 'data',
-          description: `${selectedPlan.data_size} - ${selectedPlan.validity_days} days validity`,
-        }}
-      />
-    )}
+      {/* Purchase Modal */}
+      {selectedPlan && (
+        <PurchaseModal
+          isOpen={isModalOpen}
+          onClose={() => {
+            setIsModalOpen(false);
+            setSelectedPlan(null);
+          }}
+          onSuccess={handlePurchaseSuccess}
+          product={{
+            id: selectedPlan.id,
+            name: selectedPlan.plan_name,
+            price: selectedPlan.price,
+            provider: selectedPlan.network_provider,
+            serviceType: 'data',
+            description: `${selectedPlan.data_size} - ${selectedPlan.validity_days} days validity`,
+          }}
+        />
+      )}
+    </>
   );
 };
